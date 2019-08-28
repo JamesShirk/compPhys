@@ -1,4 +1,4 @@
-# James Shirk, August 27, 2019 for Dr. Pratt Computational Physics class assignment 1
+# James Shirk, August 27, 2019 for Dr. Pratt Computational Physics class assignment 1, problem 3 
 
 # Imports the square root function from the math module
 from math import sqrt
@@ -16,7 +16,7 @@ def stDev1(samps):
     sum = 0
     sumsq = 0
     N = len(samps)
-    # iterate over each element in the list and sum each element and each element squared
+    # iterate over each element in the list and sum each element, each element squared
     for i in samps:
         sum += i
         sumsq += i**2

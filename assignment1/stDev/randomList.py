@@ -1,4 +1,4 @@
-# James Shirk, August 27, 2019 for Dr. Pratt Computational Physics class assignment 1
+# James Shirk, August 27, 2019 for Dr. Pratt Computational Physics class assignment 1, problem 3
 
 # Random Module used to generate random numbers
 # The default random seed is based on the time since none is provided
