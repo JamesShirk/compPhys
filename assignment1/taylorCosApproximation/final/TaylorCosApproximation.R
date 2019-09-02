@@ -12,6 +12,7 @@ args <- commandArgs(trailingOnly = TRUE)
 
 taylor = function(x, order) {
   coefs = (-1)^(0:order) / factorial(2 * (0:order))
+  print(coefs)
   x_grid = outer(x, 2 * (0:order), "^")
   print(x_grid)
   x_grid %*% coefs
