@@ -1,12 +1,19 @@
+# Declare Libraries
 library(ggplot2)
 library(scales)
 library(pracma)
 
+# Allow the ability to input command line arguments e.g., Rscipt TaylorCosApproximation.R 1 would make args[1] = '1'
 args <- commandArgs(trailingOnly = TRUE)
+
+# For a given input 'order' returns the the order of the taylor series for that given order
+# Coefs creates a 1 x Order matrix with the coefficients of that order of the taylor series
+# x_grid creates a 
 
 taylor = function(x, order) {
   coefs = (-1)^(0:order) / factorial(2 * (0:order))
   x_grid = outer(x, 2 * (0:order), "^")
+  print(x_grid)
   x_grid %*% coefs
 }
 
@@ -26,4 +33,4 @@ ggsave(paste0("taylorCosine",args[1],".png"), plot = plot0, device = NULL, path 
     scale = 1, width = 20, height = 10, units = c("cm"),
     dpi = 300, limitsize = TRUE)
 
-#print(integrate(f0cos, lower = -pi/2, upper = pi/2))
+#print(integrate((taylor - cosine), lower = -pi/2, upper = pi/2))
