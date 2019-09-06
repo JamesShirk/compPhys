@@ -1,6 +1,7 @@
 # James Shirk, August 28, 2019 for Dr. Pratt Computational Physics class assignment 1, problem 2
 # Generates Data for the problem
 
+# Imports math used to take factorial and numpy used to generate list
 import math
 import numpy as np
 

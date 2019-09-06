@@ -2,7 +2,6 @@
 
 # Imports the square root function from the math module
 from math import sqrt
-import statistics
 
 # Open the 'samples.txt' file and append each entry to a list.
 with open("samples.txt","r") as f:
