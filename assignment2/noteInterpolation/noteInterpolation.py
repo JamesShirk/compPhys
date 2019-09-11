@@ -4,24 +4,30 @@ import pandas as pd
 import numpy as np
 from statistics import mean 
 
-def Interpolation(type):
-    types = ["linear","quadratic", "cubic"]
+def Interpolation():
+    types = ["lin","quad", "cub"]
     data = pd.read_csv("data.txt")
     dataExtended = pd.read_csv("dataextended.txt")
-    x = data.loc[: ,"x"]
-    y = data.loc[: ,"y"]
-    xExt = dataExtended.loc[: ,"x"]
-    yExt = dataExtended.loc[: ,"y"]
-    print(yExt.to_string())
-    f = interpolate.interp1d(x, y, kind = types[type])
+    flin = interpolate.interp1d(data["x"], data["y"], kind = "linear")
+    fquad = interpolate.interp1d(data["x"], data["y"], kind = "quadratic")
+    fcub = interpolate.interp1d(data["x"], data["y"], kind = "cubic")
     xnew = np.linspace(-4, 5, endpoint = True)
-    plt.plot(x, y, "o", xnew, f(xnew), "-")
-    plt.legend(["data",  types[type] + " interpolation"], loc="best")
-    plt.savefig("data" + types[type] + ".png", dpi = 1000)
+    plt.plot(data["x"], data["y"], "o", xnew, flin(xnew), "-", xnew, fquad(xnew), "-.", xnew, fcub(xnew), "--")
+    plt.legend(["data", "linear", "quadratic", "cubic spline"], loc="best")
+    plt.savefig("noteInterpolation.png", dpi = 1000)
     plt.close()
-    result = [f(yExt) for i in dataExtended["y"]]
-    plt.plot(xExt, result, "o", "-")
-    plt.savefig("errorcomparison.png")
+    # -----------------------------------------------------------------------------
+    # Plots to calculater error
+    # List comprehensions are used on a more robust data file to find f at each point
+    # -----------------------------------------------------------------------------
+    resultLin = [abs((flin(round(i,1)) - j)) for i, j in zip(dataExtended["x"], dataExtended["y"])]
+    resultQuad = [abs((fquad(round(i,1)) - j)) for i, j in zip(dataExtended["x"], dataExtended["y"])]
+    resultCub = [abs((fcub(round(i,1)) - j)) for i, j in zip(dataExtended["x"], dataExtended["y"])]
+    plt.plot(dataExtended["x"], resultLin, "-", dataExtended["x"], resultQuad, "--", dataExtended["x"], resultCub, "-.",)
+    plt.legend(["linear", "quadratic", "cubic spline"], loc="best")
+    plt.savefig("error.png")
+    plt.close()
+    
 
 if __name__ == "__main__":
-    Interpolation(int(input("Which type of interpolation do you want (0 for linear, 1 for quadratic, 2 for cubic): ")))
+    Interpolation()
