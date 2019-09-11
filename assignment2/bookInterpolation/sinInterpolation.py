@@ -11,7 +11,7 @@ def sinInterpolation(nPoints):
     xnew = np.linspace(0, 2*math.pi, endpoint = True)
     plt.plot(x, y, "o", xnew, f(xnew), "-")
     plt.legend(["sin", "cubic interpolation"], loc="best")
-    plt.savefig("sinInterpolation.png")
+    plt.savefig("sinInterpolation.png", dpi = 1000)
 
  if __name__ == "__main__":
     sinInterpolation(int(input("How many data points for sin interpolation (min is 4): ")))

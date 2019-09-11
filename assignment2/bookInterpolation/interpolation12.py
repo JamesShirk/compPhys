@@ -13,7 +13,7 @@ def dataInterpolation():
     xnew = np.linspace(-1.5, 0, endpoint = True)
     plt.plot(x, y, "o", xnew, f(xnew), "-")
     plt.legend(["data", "cubic spline"], loc="best")
-    plt.savefig("data.png")
+    plt.savefig("data.png", dpi = 1000)
 
 def dataInterpolationExtended():
     data = pd.read_csv("dataExtended.txt")
@@ -23,7 +23,7 @@ def dataInterpolationExtended():
     xnew = np.linspace(-1.5, 4.5, endpoint = True)
     plt.plot(x, y, "o", xnew, f(xnew), "-")
     plt.legend(["data", "cubic spline"], loc="best")
-    plt.savefig("dataExtended.png")
+    plt.savefig("dataExtended.png", dpi = 1000)
 
 
 if __name__ == "__main__":

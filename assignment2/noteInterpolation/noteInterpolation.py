@@ -25,7 +25,7 @@ def Interpolation():
     resultCub = [abs((fcub(round(i,1)) - j)) for i, j in zip(dataExtended["x"], dataExtended["y"])]
     plt.plot(dataExtended["x"], resultLin, "-", dataExtended["x"], resultQuad, "--", dataExtended["x"], resultCub, "-.",)
     plt.legend(["linear", "quadratic", "cubic spline"], loc="best")
-    plt.savefig("error.png")
+    plt.savefig("error.png", dpi = 1000)
     plt.close()
     
 
