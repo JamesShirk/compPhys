@@ -36,12 +36,17 @@ int main(){
     printf("FFT = \n");
     displayComplex(out);
 
+
+    // Plotting in root, a graphing package for C++
+    // Makes a new TGraph with N points and I give it the address of the first value of the array and it fills the graph from there 
+    // Graph in normal space
     TGraph *normalPlot = new TGraph(N, &xValues[0], &y[0][REAL]);
     normalPlot->GetXaxis()->SetTitle("X");
     normalPlot->GetYaxis()->SetTitle("Y");
     normalPlot->SetTitle("Plot of function in normal space not shifted.");
     normalPlot->Draw("AL");
 
+    // Graph in imaginary space
     TGraph *fourierTransform = new TGraph(N, &out[0][REAL], &out[0][IMAG]);
     fourierTransform->GetXaxis()->SetTitle("Real");
     fourierTransform->GetYaxis()->SetTitle("Imaginary");
