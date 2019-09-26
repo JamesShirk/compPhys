@@ -6,6 +6,7 @@
 #include <vector>  //vectors for storing values
 #include <stdio.h> //for i/o
 #include <string>  //for strings lol
+#include <math.h>
 #include <iostream> // for cout
 
 #define REAL 0
@@ -14,7 +15,6 @@
 
 using namespace std;
 
-vector<double> functionValues(double lowerBound, double upperBound, double division, string type);
 int haarFunction(double x);
 void displayComplex(fftw_complex *y);
 void fft(fftw_complex *in, fftw_complex *out);
@@ -22,8 +22,10 @@ void fft(fftw_complex *in, fftw_complex *out);
 int main(){
     fftw_complex y[N];
     fftw_complex out[N];
+    float xValues [N] = {0};
     for (int i = 0; i < N; i++){
         float input = ((i / 10.) - 12.8);
+        xValues[i] = input;
         input = haarFunction(input);
         y[i][REAL] = input;
         y[i][IMAG] = 0;
@@ -32,7 +34,20 @@ int main(){
     // vector <double> xValues = functionValues(-12.8, 12.6, .1, "x");
     fft(y, out);
     printf("FFT = \n");
-    displayComplex(y);
+    displayComplex(out);
+
+    TGraph *normalPlot = new TGraph(N, &xValues[0], &y[0][REAL]);
+    normalPlot->GetXaxis()->SetTitle("X");
+    normalPlot->GetYaxis()->SetTitle("Y");
+    normalPlot->SetTitle("Plot of function in normal space not shifted.");
+    normalPlot->Draw("AL");
+
+    TGraph *fourierTransform = new TGraph(N, &out[0][REAL], &out[0][IMAG]);
+    fourierTransform->GetXaxis()->SetTitle("Real");
+    fourierTransform->GetYaxis()->SetTitle("Imaginary");
+    fourierTransform->SetTitle("Plot of function in fourier not shifted.");
+    fourierTransform->Draw("AL");
+
     return 0;
 }
 
@@ -46,23 +61,6 @@ int haarFunction(double x){
     }
 }
 
-vector<double> functionValues(double lowerBound, double upperBound, double division, string type){
-    vector<double> Values;
-    double a = lowerBound;
-    while(a <= (upperBound + division)){
-        if (type =="y"){
-            Values.push_back(haarFunction(a));
-        } else if (type == "x"){
-            Values.push_back(a);
-        } else {
-            printf("Please input either x or y for type");
-            Values.push_back(0);
-            return Values;
-        }
-        a += division;
-    }
-    return Values;
-}
 
 void fft(fftw_complex *in, fftw_complex *out){
     fftw_plan plan = fftw_plan_dft_1d(N, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
