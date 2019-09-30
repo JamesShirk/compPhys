@@ -11,14 +11,14 @@
 
 #define REAL 0
 #define IMAG 1
-#define N 32768
+#define N 256
 
 using namespace std;
 
 int haarFunction(double x);
-void displayComplex(fftw_complex *y);
+//void displayComplex(fftw_complex *y);
 void fft(fftw_complex *in, fftw_complex *out);
-//void ifft(fftw_complex *in, fftw_complex *out);
+void ifft(fftw_complex *in, fftw_complex *out);
 
 int main(){
     const double pi = 3.1415926535897;
@@ -31,11 +31,11 @@ int main(){
     double xx [N];
     // double invx [N];
     for (int i = 0; i < N; i++){
-        float input = ((i / 10.) - (((N / 10) / 2 )));
+        //float input = ((i / 10.) - (((N / 10) / 2 )));
+        float input = (i / 64.);
         xValues[i] = input;
-        input = haarFunction(input);
-	    yValues[i] = input;
-        y[i][REAL] = input;
+	    yValues[i] =  haarFunction(input);
+        y[i][REAL] = haarFunction(input);
         y[i][IMAG] = 0;
     }
     fft(y, out);
@@ -45,7 +45,8 @@ int main(){
         x[i] = sqrt(pow(out[i][REAL], 2) + pow(out[i][IMAG], 2));
         // invx[i] = invOut[i][REAL];
         if (xValues[i] != 0){
-            xx[i] = 2*pi/xValues[i];
+            //xx[i] = 2*pi/xValues[i];
+            xx[i] = 1/xValues[i];
         } else {
             xx[i] = 0;
         }
@@ -60,35 +61,7 @@ int main(){
     normalPlot->SetTitle("Plot of function in normal space not shifted.");
     normalPlot->Draw("AL");
 
-    // Graph in imaginary space
-    // TCanvas *c2 = new TCanvas();
-    // TGraph *fourierTransform = new TGraph(N, &out[0][REAL], &out[0][IMAG]);
-    // fourierTransform->GetXaxis()->SetTitle("Real");
-    // fourierTransform->GetYaxis()->SetTitle("Imaginary");
-    // fourierTransform->SetTitle("Plot of function in fourier not shifted.");
-    // fourierTransform->SetMarkerStyle(8);
-    // fourierTransform->SetMarkerColor(4);
-    // fourierTransform->Draw("APL");
-
-    // // Graph in imaginary space
-    // TCanvas *c3 = new TCanvas();
-    // TGraph *fourierTransform2 = new TGraph(N, &xValues[0], &x[0]);
-    // fourierTransform2->GetXaxis()->SetTitle("Real");
-    // fourierTransform2->GetYaxis()->SetTitle("Imaginary");
-    // fourierTransform2->SetTitle("Plot of function in fourier not shifted.");
-    // fourierTransform2->SetMarkerStyle(8);
-    // fourierTransform2->SetMarkerColor(4);
-    // fourierTransform2->Draw("APL");
-
-
-    // TCanvas *c4 = new TCanvas();
-    // TGraph *inversed = new TGraph(N, &xValues[0], &invx[0]);
-    // inversed->GetXaxis()->SetTitle("X");
-    // inversed->GetYaxis()->SetTitle("Y");
-    // inversed->SetTitle("Plot of function in normal space not shifted.");
-    // inversed->Draw("AL");
-
-    TCanvas *c5 = new TCanvas();
+    TCanvas *c2 = new TCanvas();
     TGraph *omega = new TGraph(N, &xx[0], &x[0]);
     omega->GetXaxis()->SetTitle("X");
     omega->GetYaxis()->SetTitle("Y");
@@ -102,9 +75,9 @@ int main(){
 }
 
 int haarFunction(double x){
-    if (x >= 0 && x < (.5)){
+    if (x >= 1 && x < (1.5)){
         return 1;
-    } else if (x >= (.5) && x < 1){
+    } else if (x >= (1.5) && x < 2){
         return -1;
     } else {
         return 0;
@@ -116,7 +89,6 @@ void fft(fftw_complex *in, fftw_complex *out){
     fftw_plan p;
     p = fftw_plan_dft_1d(N, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
     fftw_execute(p);
-    //fftw_one(plan, in, out);
     fftw_destroy_plan(p);
     fftw_cleanup();
 }
@@ -134,12 +106,12 @@ void fft(fftw_complex *in, fftw_complex *out){
 //     }
 // }
 
-void displayComplex(fftw_complex *y){
-    for (int i = 0; i < N; ++i){
-        if (y[i][IMAG] < 0){
-            cout << y[i][REAL] << " - " << abs(y[i][IMAG]) << "i" << endl;
-        } else {
-            cout << y[i][REAL] << " + " << y[i][IMAG] << "i" << endl;
-        }
-    }
-}
+// void displayComplex(fftw_complex *y){
+//     for (int i = 0; i < N; ++i){
+//         if (y[i][IMAG] < 0){
+//             cout << y[i][REAL] << " - " << abs(y[i][IMAG]) << "i" << endl;
+//         } else {
+//             cout << y[i][REAL] << " + " << y[i][IMAG] << "i" << endl;
+//         }
+//     }
+// }
