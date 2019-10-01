@@ -38,6 +38,7 @@ def fourierTransform():
     plt.close()
 
 def functionPlot():
+    #Plots the function over the same range
     values = arange(-5, 5, .1)
     x = [function(i) for i in values]
     plt.plot(values, x, "-")
@@ -50,10 +51,12 @@ def functionPlot():
 
 if __name__ == "__main__":
     timeTotal = 0
+    # Takes the time over 1000 runs
     for x in range(0, 1000):
         t1 = time()
         fourierTransform()
         t2 = time()
         timeTotal += (t2 - t1)
+    # Is in milliseconds by default since it's in seconds and i'd divide by 1000 as thats the number of runs and then multiply by 1000 to get ms but they cancel out
     print("The program took " + str(timeTotal) + " milliseconds.")
 
