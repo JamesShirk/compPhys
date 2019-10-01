@@ -45,7 +45,11 @@ int main(){
     for (int i = 0; i < N; i++){
         // makes 64 points from -5 to 5 with spacing equal to 10 / 64
         float input = (i / 6.4) - 5.0;
+        // Commented out parts were used for time scaling
+        // input /= 2;
         xValues[i] = input;
+	    // yValues[i] = (1.0/2.0) * sinc(input);
+        // y[i][REAL] = (1.0/2.0) * sinc(input);
 	    yValues[i] = sinc(input);
         y[i][REAL] = sinc(input);
         y[i][IMAG] = 0;
@@ -81,7 +85,9 @@ int main(){
         if (xValues[i] == 0){
             time[i] = 0;
         } else{
+            // 2. * for normal, 4. * for time scaled by 2
             time[i] = (2. * pi) / xValues[i];
+            //time[i] = (4. * pi) / xValues[i];
             //printf("time being filled with %g\n", time[i]);
         }
         yinv[i] = outInv[i][REAL];
