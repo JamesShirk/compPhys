@@ -12,10 +12,16 @@ def main():
     yFamily = [function(i, 1) for i in x]
     y = [function(i, .5) for i in x]
 
-    coef, freqs = pywt.cwt(y, arange(1,128),'mexh')
+    coef, freqs = pywt.cwt(y, 1,'mexh')
+
+    print(len(coef[0]))
 
     plt.matshow(coef)
     plt.savefig("test.png", dpi = 300)
+    plt.close()
+
+    plt.plot(x, coef[0], "-")
+    plt.savefig("wavelettransform.png", dpi = 300)
     plt.close()
 
     plt.plot(x, y, "--")
