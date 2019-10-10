@@ -1,6 +1,6 @@
 from math import sqrt, exp, pi
 import matplotlib.pyplot as plt
-from numpy import arange
+from numpy import arange, fft, linspace
 import pywt
 import scipy
 
@@ -12,26 +12,26 @@ def main():
     yFamily = [function(i, 1) for i in x]
     y = [function(i, .5) for i in x]
 
-    coef, freqs = pywt.cwt(y, 1,'mexh')
+    coef, freqs = pywt.cwt(y, arange(1,129),'mexh')
 
-    print(len(coef[0]))
+    freq = fft.fftfreq(x.shape[-1])
 
-    plt.matshow(coef)
-    plt.savefig("test.png", dpi = 300)
+    # f0 = linspace(0.5, 7.5, 129)
+
+    coefSum = [sum(i) for i in zip(*coef)]
+
+    plt.plot(freq, coefSum, "o")
+    plt.xlabel("frequency")
+    plt.ylabel("Sum of Coefficients")
+    plt.title("Mexican Hat Wavelet Transform")
+    plt.savefig("wavelettransformMexh.png", dpi = 300)
     plt.close()
 
-    plt.plot(x, coef[0], "-")
-    plt.savefig("wavelettransform.png", dpi = 300)
-    plt.close()
-
-    plt.plot(x, y, "--")
-    plt.axhline(y=0, color='black', linestyle='-')
-    plt.savefig("function.png", dpi = 300)
-    plt.close()
-
-    plt.plot(x, yFamily, "--")
-    plt.axhline(y=0, color='black', linestyle='-')
-    plt.savefig("mexicanHat.png", dpi = 300)
+    plt.imshow(coef, origin='lower', aspect='auto', extent=[x[0], x[-1], freqs[0], freqs[-1]])
+    plt.xlabel("t")
+    plt.ylabel("f")
+    plt.title("Coefficient matrix visualization")
+    plt.savefig("CoefMatrixMexh.png", dpi=300)
     plt.close()
 
 if __name__ == "__main__":

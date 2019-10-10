@@ -20,6 +20,8 @@ def main():
     f0 = linspace(0.5, 7.5, 100)
     wPSD = wavelet_PSD(x, y, f0, Q=1.0)
 
+    print(wPSD)
+
     fig = plt.figure(figsize=(5, 5))
     fig.subplots_adjust(hspace=0.05, left=0.12, right=0.95, bottom=0.08, top=0.95)
 
