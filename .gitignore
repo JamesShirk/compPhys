@@ -8,3 +8,4 @@ numberList.txt
 .vscode
 fourier
 *.pdf
+.DS_STORE

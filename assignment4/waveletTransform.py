@@ -16,8 +16,6 @@ def main():
 
     freq = fft.fftfreq(x.shape[-1])
 
-    # f0 = linspace(0.5, 7.5, 129)
-
     coefSum = [sum(i) for i in zip(*coef)]
 
     plt.plot(freq, coefSum, "o")
@@ -25,6 +23,13 @@ def main():
     plt.ylabel("Sum of Coefficients")
     plt.title("Mexican Hat Wavelet Transform")
     plt.savefig("wavelettransformMexh.png", dpi = 300)
+    plt.close()
+
+    plt.plot(x, y, "-", x, yFamily, "--")
+    plt.xlabel("time")
+    plt.ylabel("\psi(t)")
+    plt.title("Mexican Hat Mother Wavelets")
+    plt.savefig("function.png", dpi = 300)
     plt.close()
 
     plt.imshow(coef, origin='lower', aspect='auto', extent=[x[0], x[-1], freqs[0], freqs[-1]])
