@@ -67,4 +67,4 @@ def errorComparison(nPoints):
     
 
 if __name__ == "__main__":
-    errorComparison(200)
+    errorComparison(400)
