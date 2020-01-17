@@ -13,6 +13,7 @@ def derivative(x):
     return (numerator / (5*(x**2)))
 
 # Analytical second derivative
+def secondDerivative(x):
     numerator = (exp(-(x**2)) * ((((12*(x**4)) + ((6 - 14700*(pi**2))*(x**2)) + 6) * sin(70*pi*x)) + ((-840 * pi *(x**3) - 420*pi*x)*cos(70*pi*x))+((20*(x**4)+((10 - (4500*pi*2))*(x**2))+10)*sin(30*pi*x)) + (((-600*pi*(x**3) - 300*pi*x)*cos(30*pi*x)))))
     return (numerator / (5*(x**3)))
 

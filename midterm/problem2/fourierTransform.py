@@ -1,10 +1,18 @@
-from numpy.fft import fft, fftfreq, ifft
+# James Shirk October 29 for Comp Phys Midterm Problem 1 
+from numpy.fft import fft, fftfreq, ifft, irfft
 from numpy import linspace
+import numpy as np
 from math import pi, sin, exp, cos, sqrt      
 import matplotlib.pyplot as plt
+import itertools
 
 def function(x):
     return ((sin(30*pi*x)+(.6*sin(70*pi*x)))*(exp(-1*(x**2)) / x))
+
+# Analytical Derivative of given function
+def derivative(x):
+    numerator = -1*((exp(-(x**2))) * (((6*(x**2) + 3)*sin(70*pi*x)) - (210*pi*x*cos(70*pi*x) + ((10*(x**2) + 5)*sin(30*pi*x)) - ((150*pi*x) * cos(30*pi*x)))))
+    return (numerator / (5*(x**2)))
 
 def fourierTransform(nPoints):
     t = linspace(-3, 3, nPoints)
@@ -17,6 +25,7 @@ def fourierTransform(nPoints):
     freqNew = orderFreq(nPoints, magnitude, freq)[1]
     magnitudeNew = orderFreq(nPoints, magnitude, freq)[0]
 
+    # Plot of real/imag components
     plt.plot(freq, transform.real, '--', freq, transform.imag, "--")
     plt.legend(["Real", "Imaginary"], loc = "best")
     plt.xlabel('Frequency')
@@ -25,6 +34,7 @@ def fourierTransform(nPoints):
     plt.savefig('fourierTransformRealImag.png', dpi = 300)
     plt.close()
 
+    # Plot of magnitude
     plt.plot(freqNew, magnitudeNew, '--')
     plt.xlabel('Frequency')
     plt.ylabel('Magnitude')
@@ -44,56 +54,8 @@ def orderFreq(nPoints, magnitude, freq):
     outFreq.extend(startFreq)
     outFreq.extend(endFreq)
     outMag = (startMag + endMag)
-    return outMag, outFreq;
-
-def spectralMethod(nPoints):
-    t = linspace(-3, 3, nPoints)
-    y = [function(i) for i in t]
-
-    freq = fftfreq(t.shape[-1])
-    transform = fft(y)
-    magnitude = [sqrt(transform.real[i]**2 + transform.imag[i]**2) for i in range(0, len(transform))]
-
-    freqNew = orderFreq(nPoints, magnitude, freq)[1]
-    magnitudeNew = orderFreq(nPoints, magnitude, freq)[0]
-
-    dx = []
-    # Central Euler
-    for i in range(1, (nPoints) - 1):
-        j = i - 1
-        k = i + 1
-        # performs the forward euler method. 
-        # x[j] - x[i] is a constant but left in to generalize
-        dx.append((magnitudeNew[k] - magnitudeNew[j]) / (freqNew[k] - freqNew[j]))
-
-    plt.plot(freqNew[1:(nPoints) - 1], dx, '--')
-    plt.xlabel('Frequency')
-    plt.ylabel('"$\\frac{d}{dx}FT(f)$"')
-    plt.title('Fourier Transform of Function')
-    plt.savefig('derivativeFT.png', dpi = 300)
-    plt.close()
-
-    # IFFT module requires the points to be the old order
-    dxStart = dx[(nPoints // 2): nPoints]
-    dxEnd = dx[0:(nPoints // 2)]
-    outDx = dxStart + dxEnd
-    outDx.insert(0, 0)
-    outDx.append(0)
-
-    derivative = ifft(outDx)
-    magnitudeDerivative = [sqrt(derivative.real[i]**2 + derivative.imag[i]**2) for i in range(0, len(derivative))]
-
-    #plt.plot(freq, derivative.real, '--', freq, derivative.imag, "--")
-    plt.plot(freq, derivative.real, "--")
-    plt.legend(["Real", "Imaginary"], loc = "best")
-    plt.xlabel('time')
-    plt.ylabel('"$\\frac{d}{dx}f(t)$"')
-    plt.title('IFT of FT derivative')
-    plt.savefig('derivativeIFT.png', dpi = 300)
-    plt.close()
+    return (outMag, outFreq)
 
 
 if __name__ == "__main__":
     fourierTransform(400)
-    #spectralMethod(1, [1, 2, 3])
-    spectralMethod(400)
