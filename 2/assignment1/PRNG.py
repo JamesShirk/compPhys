@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import time
+import random
 
 def psuedoRanXOR(seed, m1, p, q, n, upperLimit, m2 = None):
     m2 = m1 if not isinstance(m2, int) else m2
     nInitial = p + 1 if p > q else q + 1
     initial = psuedoRanSum(seed, m1, nInitial, p)
-    x0, x1, x2 = 0, 0, 0
     for i in range(0, n):
         initial.append((initial[len(initial) - p] ^ initial[len(initial) - q]) % m2)
     output = [i % upperLimit for i in initial]
@@ -26,11 +26,11 @@ def psuedoRanSum(seed, m, n, p):
         x1 = x2
         x0 = x1
         values.append(x2)
-    print(values)
+    # print(values)
     return values
 
 def weightedDie(nRolls):
-    x = psuedoRanXOR(62469019520029850171, 2**32 - 1, 250, 103, nRolls, 100)
+    x = psuedoRanXOR(round(time.time()), 2**32 - 1, 250, 103, nRolls, 100)
     output = [i + 1 for i in x]
     choices = {0: 1, 1: 2, 2: 3, 3: 4, 4: 5}
     for i in range(0, len(output)):
@@ -38,16 +38,16 @@ def weightedDie(nRolls):
             output[i] = 6
         else:
             output[i] = choices.get(output[i] % 5)
-    print("fixed")
+    # print("fixed")
     for i in range(0, 6):
         print(output.count(i + 1))
     return output
 
 def correctDie(nRolls):
-    x = psuedoRanXOR(82494772753604641067, 2**32 - 1, 250, 103, nRolls, 6)
+    x = psuedoRanXOR(round(time.time()), 2**32 - 1, 250, 103, nRolls, 6)
     output = [i + 1 for i in x]
-    print(len(output))
-    print("fair")
+    # print(len(output))
+    # print("fair")
     for i in range(0, 6):
         print(output.count(i + 1))
     return output
@@ -59,6 +59,8 @@ if __name__ == "__main__":
     nRolls = 1000
     fairDie = correctDie(nRolls)
     fixedDie = weightedDie(nRolls)
+    random.shuffle(fairDie)
+    random.shuffle(fixedDie)
     plt.hist2d(fairDie, fixedDie, bins = [6,6], range = [[.5, 6.5], [.5, 6.5]])
     # fig2 = plt.figure()
     # plt.hist2d(fairDie, fixedDie, bins=6)
