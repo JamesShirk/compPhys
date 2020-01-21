@@ -7,7 +7,7 @@ def psuedoRanXOR(seed, m1, p, q, n, upperLimit, m2 = None):
     m2 = m1 if not isinstance(m2, int) else m2
     nInitial = p + 1 if p > q else q + 1
     initial = psuedoRanSum(seed, m1, nInitial, p)
-    for i in range(0, n):
+    for _ in range(0, n):
         initial.append((initial[len(initial) - p] ^ initial[len(initial) - q]) % m2)
     output = [i % upperLimit for i in initial]
     return(output[nInitial:n + nInitial])
@@ -17,16 +17,11 @@ def psuedoRanSum(seed, m, n, p):
     x1 = seed % p
     x2 = 0
     values = []
-    for i in range(0, 1000):
-        x2 = (x1 + x0) % m
-        x1 = x2
-        x0 = x1
-    for i in range(0, n):
+    for _ in range(0, n):
         x2 = (x1 + x0) % m
         x1 = x2
         x0 = x1
         values.append(x2)
-    # print(values)
     return values
 
 def weightedDie(nRolls):
