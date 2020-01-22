@@ -108,6 +108,7 @@ def tolcheck(A, tolerance):
         for j in range(i + 1, n):
             if (abs(A[j][i]) > tolerance):
                 return False
+<<<<<<< HEAD
     return True
 
 def eigenvectors(A, eigs):
@@ -136,3 +137,6 @@ def eigenvectors(A, eigs):
 #     output, eigenvecs = eigenValues(a, 100, 1e-30)
 #     print("output:\n", output.round(10))
 #     print("eigenvectors:\n", eigenvecs.round(10))
+=======
+    return True
+>>>>>>> ea055333597b0e6a3dadbd24aab37faa7cf85792
