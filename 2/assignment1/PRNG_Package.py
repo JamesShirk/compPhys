@@ -4,6 +4,7 @@
 import numpy as np              # For PRNG
 from math import floor          # Floor function
 import matplotlib.pyplot as plt # Plotting
+import time
 
 
 # Calculates the central moment of order x
@@ -31,6 +32,20 @@ def numberGenerator(nValues, max, plusOne = None):
     if(plusOne):
         output = output + 1
     return output
+
+# For uncorrelated random numbers within the interval [0,1], the following relation should hold true
+# Mean(x^k) = 1/(k + 1)
+# This checks that
+def randomness(k):
+    x = numberGenerator(1000, 100)
+    y = [i / 100. for i in x]
+    num = []
+    for i in y:
+        num.append(i ** k)
+    mean = sum(num)/len(num)
+    expected = 1/(1+k)
+    print("For a k of", k, "Random numbers should return", expected, "They did return", mean, "a difference of ", (abs(expected - mean)/expected)*100,"%")
+    print("Mean squared is", (sum(y)/len(y))**2,"It should equal .25")
 
 # Fixed Die
 def weightedDie(nRolls):
@@ -107,3 +122,6 @@ if __name__ == "__main__":
     print("The variance is ", centralMoment(dieRolls[2], 2))
     print("The skewness is ", skewness(dieRolls[2]))
     print("The kurtosis is ", kurtosis(dieRolls[2]))
+
+    for i in range(3, 10):
+        randomness(i)

@@ -21,6 +21,19 @@ def skewness(input):
 def kurtosis(input):
     return centralMoment(input, 4) / (centralMoment(input, 2)**(2))
 
+# For uncorrelated random numbers within the interval [0,1], the following relation should hold true
+# Mean(x^k) = 1/(k + 1)
+# This checks that
+def randomness(k):
+    x = psuedoRanXOR(round(time.time()), 2**32 - 1, 250, 103, 1000, 100)
+    y = [i / 100. for i in x]
+    num = []
+    for i in y:
+        num.append(i ** k)
+    mean = sum(num)/len(num)
+    expected = 1/(1+k)
+    print("For a k of", k, "Random numbers should return", expected, "They did return", mean, "a difference of ", (abs(expected - mean)/expected)*100,"%")
+
 # Main PRNG
 def psuedoRanXOR(seed, m1, p, q, n, upperLimit, m2 = None):
     # Allows for the use of two m values (mod value for the Fibbonacci generator)
@@ -123,3 +136,6 @@ if __name__ == "__main__":
     print("The variance is ", centralMoment(dieRolls[2], 2))
     print("The skewness is ", skewness(dieRolls[2]))
     print("The kurtosis is ", kurtosis(dieRolls[2]))
+
+    for i in range(3, 10):
+        randomness(i)
