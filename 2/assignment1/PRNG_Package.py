@@ -45,7 +45,6 @@ def randomness(k):
     mean = sum(num)/len(num)
     expected = 1/(1+k)
     print("For a k of", k, "Random numbers should return", expected, "They did return", mean, "a difference of ", (abs(expected - mean)/expected)*100,"%")
-    print("Mean squared is", (sum(y)/len(y))**2,"It should equal .25")
 
 # Fixed Die
 def weightedDie(nRolls):
@@ -88,7 +87,7 @@ def countOutput(input, n = 1000, six = None):
             if input[0][i] == input[1][i] and input[0][i] == 6:
                 count += 1
         print("The number of 6 + 6 rolls was: ", count)
-        return 0
+        return count
     for i in range(0, 6):
         print("The number for roll " + str(i + 1) + " " ,input.count(i + 1), ". Proportion of total: ",input.count(i + 1) / n)
 
