@@ -34,7 +34,7 @@ class walker:
         return self.grid
     # Private Methods
     # Each method has the same format, finding current location by finding the 1 value, setting a value one shifted of that to 1 and the current to .25.
-    # If it's at a wall it will just recursively move and run until it randomly gets a valid direction.
+    # If it's at a wall it will just recursively moves until it randomly gets a valid direction.
     def __moveRight(self):
         x, y = np.where(self.grid == 1)
         x = int(x)
@@ -46,14 +46,31 @@ class walker:
             self.move()
     def __moveLeft(self):
         x, y = np.where(self.grid == 1)
-        x = int(x)
-        y = int(y)
-        try:
-            self.grid[x][y - 1] = 1
-            self.grid[x][y] = 0.25
-        except:
+        if (x == 0 or y == 0):
             self.move()
+            print(1)
+        else:
+            x = int(x)
+            y = int(y)
+            try:
+                self.grid[x][y - 1] = 1
+                self.grid[x][y] = 0.25
+            except:
+                self.move()
     def __moveUp(self):
+        x, y = np.where(self.grid == 1)
+        if (x == 0 or y == 0):
+            self.move()
+            print(2)
+        else:
+            x = int(x)
+            y = int(y)
+            try:
+                self.grid[x - 1][y] = 1
+                self.grid[x][y] = 0.25
+            except:
+                self.move()
+    def __moveDown(self):
         x, y = np.where(self.grid == 1)
         x = int(x)
         y = int(y)
@@ -62,20 +79,11 @@ class walker:
             self.grid[x][y] = 0.25
         except:
             self.move()
-    def __moveDown(self):
-        x, y = np.where(self.grid == 1)
-        x = int(x)
-        y = int(y)
-        try:
-            self.grid[x - 1][y] = 1
-            self.grid[x][y] = 0.25
-        except:
-            self.move()
 
 def test():
     fig, ax = plt.subplots(figsize=(5,5))
     walk1.move()
-    ax.spy(walk1.returnGrid())
+    ax.imshow(walk1.returnGrid(), cmap="hot")
     ax.set(xlabel="X Position", ylabel="Y Position",title="Current Walker Position")
     fig.canvas.draw()
     image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
@@ -137,4 +145,5 @@ def histos(L, N):
 
 if __name__ == "__main__":
     walk1 = walker(101)
-    animate(5000, 500)
+    animate(2000, 10)
+    #histos(11, 150)
