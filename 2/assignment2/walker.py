@@ -80,20 +80,25 @@ class walker:
         except:
             self.move()
 
-def test():
+# Iterates the frame of the animation
+def iterateAnimation(n):
     fig, ax = plt.subplots(figsize=(5,5))
     walk1.move()
+    # Plots the grid, converts it to rgb string then returns that.
     ax.imshow(walk1.returnGrid(), cmap="hot")
     ax.set(xlabel="X Position", ylabel="Y Position",title="Current Walker Position")
     fig.canvas.draw()
     image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
     image  = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+    print(n)
     return image
 
+# Animates over a given number of frames
 def animate(n, fps):
     kwargs_write = {'fps':1.0, 'quantizer':'nq'}
-    imageio.mimsave('./movement.gif', [test() for i in range(n)], fps=fps)
+    imageio.mimsave('problem1/movement.gif', [iterateAnimation(i) for i in range(n)], fps=fps)
 
+# Computes PDFs for the average distance from the mean at a given number of steps
 def distance(L, NumWalkers):
     output = []
     midX, midY = (L//2, L//2)
@@ -101,22 +106,23 @@ def distance(L, NumWalkers):
         walk = walker(L)
         dist = []
         for j in range(1, 501):
+            # If the steps are equal to 10, 20, ... etc. calculate the distance and then move
             if (j == 10 or j == 20 or j == 50 or j == 100 or j == 200 or j == 500):
                 x, y = walk.currentLocation()
                 dx = sqrt((x - midX)**2 + (y - midY)**2)
-                # print(dx)
                 dist.append(dx)
                 walk.move()
             else:
                 walk.move()
         output.append(dist)
+    # Returns the disttance for a givern number of walkers then returns a nSteps x nWalkers array
     return output
 
 def histos(L, N):
     input = distance(L, N)
     steps = {0:10, 1:20, 2:50, 3:100, 4:200, 5:500}
 
-    # TODO: FIX THESE NEXT 15 LINES
+    # These lines are messy, but Transpose the matrix in a way, instead of nWalkers arrays of nSteps, it's nSteps arrays of nWalkers.
     list10, list20, list50, list100, list200, list500 = [], [], [], [], [], []
     for i in range(len(input)):
         list10.append(input[i][0])
@@ -133,17 +139,18 @@ def histos(L, N):
     dists.append(list200)
     dists.append(list500)
 
+    # Iteratively calculates the histograms.
     for i in range(6):
         plt.hist(dists[i], bins = 15, density = True)
         plt.ylabel("Probability of Distance from origin for " + str(steps.get(i)) + " steps.")
         plt.xlabel("Distance")
         plt.title("PDF of distance from origin for " + str(steps.get(i)) + " steps.")
-        plt.savefig("1DHisto" + str(steps.get(i)) +".png", dpi = 100)
+        plt.savefig("problem1/1DHisto" + str(steps.get(i)) +".png", dpi = 100)
         plt.close()
 
-
-
+# Runs on startup
 if __name__ == "__main__":
-    walk1 = walker(101)
-    animate(2000, 10)
-    #histos(11, 150)
+    gridSize = 101
+    walk1 = walker(gridSize)
+    histos(gridSize, 150)
+    animate(1000, 10)
