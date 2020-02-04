@@ -201,8 +201,11 @@ if __name__ == "__main__":
     grids = movement(1000)
 
     # All for animation
-    # k = 0
-    # fig = plt.figure()
-    # im = plt.imshow(grids[0], animated=True, cmap="hot")
-    # ani = animation.FuncAnimation(fig, updateFig, frames = 999)
-    # ani.save('problem2/change.gif', writer='imagemagick', fps=10)
+    k = 0
+    fig = plt.figure()
+    plt.ylabel("Y position")
+    plt.xlabel("X position")
+    plt.title("Position and Aggregation of Many Walkers")
+    im = plt.imshow(grids[0], animated=True, cmap="hot")
+    ani = animation.FuncAnimation(fig, updateFig, frames = 999)
+    ani.save('problem2/change.gif', writer='imagemagick', fps=10)
