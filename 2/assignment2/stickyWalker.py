@@ -198,7 +198,7 @@ def updateFig(*args):
 
 if __name__ == "__main__":
     # Main method
-    grids = movement(1000)
+    grids = movement(100)
 
     # All for animation
     # k = 0

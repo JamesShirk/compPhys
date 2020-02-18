@@ -153,4 +153,4 @@ if __name__ == "__main__":
     gridSize = 101
     walk1 = walker(gridSize)
     histos(gridSize, 150)
-    animate(1000, 10)
+    # animate(1000, 10)
