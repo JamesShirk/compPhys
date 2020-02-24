@@ -13,13 +13,23 @@ def function(x):
     firstExponential = exp(-((x-3)**2) / 2)
     secondExponential = exp(-((x-6)**2) / 2)
     gaussian = exp(-(x**2) / 2)
+<<<<<<< HEAD
     return (firstExponential + secondExponential) * gaussian * (7)
+=======
+    return (firstExponential + secondExponential) * gaussian * 7
+>>>>>>> f3237b784a6d17f3455d5048c01c12dd6d2a4773
 
 def mcInt(precision = 1e-5):
     area, count, sum = 0, 1, 0
     error = []
+<<<<<<< HEAD
     while(count < 100000):
         x = ((random_sample()) * 7) - 8
+=======
+    while(count < 100):
+        x = (random_sample() * 7) - 8
+        print(x)
+>>>>>>> f3237b784a6d17f3455d5048c01c12dd6d2a4773
         fx = function(x)
         sum += fx
         area = sum / count

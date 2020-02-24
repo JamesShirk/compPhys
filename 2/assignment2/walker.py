@@ -141,7 +141,8 @@ def histos(L, N):
 
     # Iteratively calculates the histograms.
     for i in range(6):
-        plt.hist(dists[i], bins = 15, density = True)
+        bin = 6 if i == 0 else 15
+        plt.hist(dists[i], bins = bin, density = True)
         plt.ylabel("Probability of Distance from origin for " + str(steps.get(i)) + " steps.")
         plt.xlabel("Distance")
         plt.title("PDF of distance from origin for " + str(steps.get(i)) + " steps.")
@@ -153,4 +154,8 @@ if __name__ == "__main__":
     gridSize = 101
     walk1 = walker(gridSize)
     histos(gridSize, 150)
+<<<<<<< HEAD
     # animate(1000, 10)
+=======
+    #animate(1000, 10)
+>>>>>>> f3237b784a6d17f3455d5048c01c12dd6d2a4773
