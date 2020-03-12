@@ -1,37 +1,22 @@
 import time
+from readAudio import getSeed
 
-# Main PRNG
-def psuedoRanXOR(seed, m1, p, q, n, upperLimit, m2 = None):
-    # Allows for the use of two m values (mod value for the Fibbonacci generator)
-    m2 = m1 if not isinstance(m2, int) else m2
-    # Generates the intial random data using the simple Fibbonacci generator
-    nInitial = p + 1 if p > q else q + 1
-    initial = psuedoRanSum(seed, m1, nInitial, p, q)
-    # Appends values to the end of the list equal to (Xp XOR Xq mod m2)
-    for _ in range(0, n):
-        initial.append((initial[len(initial) - p] ^ initial[len(initial) - q]) % m2)
-    # generates even distribution by modding the output by some upperlimit
-    output = [i % upperLimit for i in initial]
-    # Returns only the XOR generated values
-    return(output[nInitial:n + nInitial])
-
-# Generates Fibbonacci values using a seed as x0 and seed mod p as x1 then just x2 = x1 + x0 mod m
-def psuedoRanSum(seed, m, n, p, q):
-    x0 = seed
-    x1 =  seed % p if seed % 2 == 0 else seed % q
-    x2 = 0
-    values = []
-    for _ in range(0, n):
-        x2 = (x1 + x0) % m
-        x1 = x2
-        x0 = x1
-        values.append(x2)
-    return values
-
-def rand_sample(x):
-    randy = psuedoRanXOR(round(time.time()), (2**32) - 1, 250, 103, 1000, x)
-    return randy[-1]
-
-if __name__ == "__main__":
-    for i in range(100):
-        print(rand_sample(5))
+# Main PRNG uses xorshift method
+class rng:
+    def __init__(self):
+        # Instantiate seeds
+        self.seeds = getSeed(3)
+        self.x = self.seeds[5]
+        self.y = self.seeds[15]
+        self.z = self.seeds[20]
+        self.w = self.seeds[25]
+    def __xorshift(self):
+        # Generates the random numbers
+        t = self.x ^ (self.x  << 11)
+        self.x = self.y
+        self.y = self.z
+        self.z = self.w
+        self.w = self.w ^ (self.w >> 19) ^ t ^ (t >> 8)
+    def getRandom(self, n):
+        self.__xorshift()
+        return (self.w % n)

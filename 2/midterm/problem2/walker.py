@@ -1,6 +1,7 @@
 import numpy as np
 from math import floor
 import matplotlib.pyplot as plt
+from prng import rng
 
 class walker:
     def __init__(self, size):
@@ -8,19 +9,20 @@ class walker:
         self.grid[size//2][size//2] = 1
         self.size = size
         self.output = []
+        #self.randy = rng()
     def currentPosition(self):
         x,y = np.where(self.grid == 1)
         x, y = int(x), int(y)
         return x, y
     def move(self, n):
-        for i in range(n):
+        for _ in range(n):
             self.__move()
             self.output.append(self.__distanceFromOrigin())
         return self.output, self.grid
     def __move(self):
-        possibleSteps = [-2, -1, 1, 2]
-        step = possibleSteps[floor(np.random.random_sample() * 4)]
-        direction = floor(np.random.random_sample() * 4)
+        possibleSteps = [-2, -1, 0, 1, 2]
+        step = possibleSteps[randy.getRandom(5)]
+        direction = randy.getRandom(5)
         if direction == 0:
             self.__moveLeft(step)
         if direction == 1:
@@ -66,7 +68,6 @@ def averageDistance(outputs):
     distanceLastStep = []
     for i in outputs:
         distanceLastStep.append(i[-1])
-    sumDistances = sum(distanceLastStep)
     #distanceLastStep = [i / sumDistances for i in distanceLastStep]
     n, bins, _ = plt.hist(distanceLastStep, density = True)
     plt.xlabel("Distance from origin")
@@ -79,7 +80,8 @@ def averageDistance(outputs):
     print("The histogram integrates to " + str(integral))
 
 if __name__ == "__main__":
-    nWalkers = 1000
+    randy = rng()
+    nWalkers = 10000
     outputs = []
     for i in range(nWalkers):
         walky = walker(101)
@@ -87,7 +89,6 @@ if __name__ == "__main__":
         outputs.append(output)
     averageDistance(outputs)
     plt.imshow(grid, cmap='hot', interpolation='nearest')
-    plt.show()
     plt.title("Path of the Walker")
     plt.savefig("path.png")
     plt.close()
